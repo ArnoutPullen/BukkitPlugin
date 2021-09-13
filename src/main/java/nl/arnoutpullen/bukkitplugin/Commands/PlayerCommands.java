@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 public class PlayerCommands {
 
@@ -26,6 +27,7 @@ public class PlayerCommands {
         this.registerCommand("tpa", this::teleportRequest);
         this.registerCommand("tpaccept", this::teleportAccept);
         this.registerCommand("tpdeny", this::teleportDeny);
+        this.registerCommand("back", this::teleportPlayerToLatestPosition);
         this.registerCommand("up", this::teleportPlayerUp);
 
         this.registerCommand("online", this::online);
@@ -138,8 +140,48 @@ public class PlayerCommands {
 
         // todo permission check
 
+        Location latestLocation = player.getLocation();
         // Teleport player
-        return player.teleport(location);
+        boolean teleported = player.teleport(location);
+
+        // Update player location
+        if (teleported) {
+            this.plugin.latestPlayerLocations.insertOrUpdate(player.getUniqueId(), latestLocation);
+        }
+
+        return teleported;
+    }
+
+    /**
+     * Teleport to the latest know locations
+     * /back
+     * */
+    public boolean teleportPlayerToLatestPosition(CommandSender commandSender, Command cmd, String label, String[] args) {
+        // Get player
+        Player player = this.plugin.getServer().getPlayer(commandSender.getName());
+
+        if (player == null) {
+            return false;
+        }
+
+        UUID uuid = player.getUniqueId();
+        boolean teleported = false;
+
+        // Get the latest player location
+        Location location = player.getLocation();
+        Location latestLocation = this.plugin.latestPlayerLocations.get(uuid);
+
+        // Teleport player
+        if (latestLocation != null) {
+            teleported = player.teleport(latestLocation);
+        }
+
+        // Set from location as player location
+        if (teleported) {
+            this.plugin.latestPlayerLocations.insertOrUpdate(uuid, location);
+        }
+
+        return teleported;
     }
 
     /**

@@ -17,6 +17,9 @@ commands:
   tpdeny:
     description: Deny teleport request
     usage: /tpdeny
+  back:
+    description: Teleport back
+    usage: /back
   up:
     description: Teleport up
     usage: /up [1/256]

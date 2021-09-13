@@ -1,6 +1,8 @@
 package nl.arnoutpullen.bukkitplugin.Commands;
 
 import nl.arnoutpullen.bukkitplugin.BukkitPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
@@ -20,10 +22,43 @@ public class PlayerCommands {
     public PlayerCommands(BukkitPlugin plugin) {
         this.plugin = plugin;
 
+        this.registerCommand("online", this::online);
         this.registerCommand("enderchest", this::openEnderChest);
         this.registerCommand("heal", this::healPlayer);
         this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
+    }
+
+    /**
+     * Display in chat which users are online
+     * /online
+     */
+    public boolean online(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            sender.sendMessage(player.getName() + ", The following players are online");
+
+            for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+                Location location = player1.getLocation();
+
+                sender.sendMessage(player1.getName());
+                sender.sendMessage("X: " + location.getBlockX() + " Y:" + location.getBlockY() + " Z:" + location.getBlockZ());
+            }
+        } else {
+            sender.sendMessage("You must be a player!");
+            return false;
+        }
+
+        if (cmd.getName().equalsIgnoreCase("online")) {
+            // Players online
+            plugin.getLogger().info("The following players are online:");
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                plugin.getLogger().info(player.getName());
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**

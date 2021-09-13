@@ -1,0 +1,6 @@
+name: BukkitPlugin
+version: '${project.version}'
+main: nl.arnoutpullen.bukkitplugin.BukkitPlugin
+api-version: 1.15
+authors: [ ArnoutPullen ]
+website: https://arnoutpullen.nl

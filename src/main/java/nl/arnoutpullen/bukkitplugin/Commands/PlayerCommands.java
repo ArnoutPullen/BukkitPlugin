@@ -26,8 +26,8 @@ public class PlayerCommands {
         this.registerCommand("tpa", this::teleportRequest);
         this.registerCommand("tpaccept", this::teleportAccept);
         this.registerCommand("tpdeny", this::teleportDeny);
-
         this.registerCommand("up", this::teleportPlayerUp);
+
         this.registerCommand("online", this::online);
         this.registerCommand("enderchest", this::openEnderChest);
         this.registerCommand("heal", this::healPlayer);
@@ -37,7 +37,7 @@ public class PlayerCommands {
 
     /**
      * Send teleport request to player
-     * /tpa Player
+     * /tpa [player]
      */
     public boolean teleportRequest(CommandSender commandSender, Command cmd, String label, String[] args) {
         if (!(commandSender instanceof Player)) {
@@ -87,8 +87,8 @@ public class PlayerCommands {
 
     /**
      * Teleport to player
-     * /tp Player
-     * /tp FromPlayer ToPlayer
+     * /tp [player]
+     * /tp [player(target)] [player(destination)]
      */
     public boolean teleportToPlayer(CommandSender commandSender, Command cmd, String label, String[] args) {
         Location location;
@@ -225,7 +225,7 @@ public class PlayerCommands {
     /**
      * Open enderchest of player
      * /enderchest
-     * /enderchest Player
+     * /enderchest [player]
      */
     public boolean openEnderChest(CommandSender commandSender, Command cmd, String label, String[] args) {
         // Get player
@@ -260,7 +260,7 @@ public class PlayerCommands {
     /**
      * Heal commandSender or Player
      * /heal
-     * /heal Player
+     * /heal [player]
      */
     public boolean healPlayer(CommandSender commandSender, Command cmd, String label, String[] args) {
         Player player = this.plugin.getServer().getPlayer(commandSender.getName());
@@ -290,7 +290,7 @@ public class PlayerCommands {
 
     /**
      * Send message directly to user
-     * /msg username message
+     * /msg [player] [message]
      * */
     public boolean sendPlayerDirectMessage(CommandSender commandSender, Command cmd, String label, String[] args) {
 

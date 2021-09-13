@@ -22,12 +22,70 @@ public class PlayerCommands {
     public PlayerCommands(BukkitPlugin plugin) {
         this.plugin = plugin;
 
+        this.registerCommand("tp", this::teleportToPlayer);
         this.registerCommand("up", this::teleportPlayerUp);
         this.registerCommand("online", this::online);
         this.registerCommand("enderchest", this::openEnderChest);
         this.registerCommand("heal", this::healPlayer);
         this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
+    }
+
+    /**
+     * Teleport to player
+     * /tp Player
+     * /tp FromPlayer ToPlayer
+     */
+    public boolean teleportToPlayer(CommandSender commandSender, Command cmd, String label, String[] args) {
+        Location location;
+        Player player     = this.plugin.getServer().getPlayer(commandSender.getName());
+
+        if (player == null) {
+            commandSender.sendMessage("You are not a player");
+            return false;
+        }
+
+        if (args.length == 1) {
+            String username = args[0];
+            player   = this.plugin.getServer().getPlayer(username);
+
+            if (player == null) {
+                commandSender.sendMessage("User not found");
+                return false;
+            }
+
+            if (!player.isOnline()) {
+                commandSender.sendMessage("User not online");
+                return false;
+            }
+        }
+
+        if (args.length == 2) {
+            String targetPlayerName      = args[0];
+            String destinationPlayerName = args[1];
+
+            Player targetPlayer = this.plugin.getServer().getPlayer(targetPlayerName);
+            player = this.plugin.getServer().getPlayer(destinationPlayerName);
+
+            if (targetPlayer == null || player == null) {
+                commandSender.sendMessage("Users not found");
+                return false;
+            }
+
+            if (!targetPlayer.isOnline() || !player.isOnline()) {
+                commandSender.sendMessage("Users not online");
+                return false;
+            }
+            location = targetPlayer.getLocation();
+        } else {
+            commandSender.sendMessage("Try /tpa Username");
+            return false;
+        }
+
+        // todo permission check
+
+        // Teleport player
+        return player.teleport(location);
     }
 
     /**

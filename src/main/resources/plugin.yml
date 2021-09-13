@@ -5,6 +5,9 @@ api-version: 1.15
 authors: [ ArnoutPullen ]
 website: https://arnoutpullen.nl
 commands:
+  tp:
+    description: Teleport to player
+    usage: /tp [player]
   up:
     description: Teleport up
     usage: /up [1/256]

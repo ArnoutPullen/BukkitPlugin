@@ -2,6 +2,7 @@ package nl.arnoutpullen.bukkitplugin;
 
 import nl.arnoutpullen.bukkitplugin.Commands.PlayerCommands;
 import nl.arnoutpullen.bukkitplugin.Data.LatestPlayerLocations;
+import nl.arnoutpullen.bukkitplugin.Events.DeathEventHandler;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +19,9 @@ public final class BukkitPlugin extends JavaPlugin {
         // Register data handlers
         this.latestPlayerLocations = new LatestPlayerLocations();
 
+        // Register events
+        this.registerEvents();
+
         // Register Commands
         this.registerCommands();
     }
@@ -26,6 +30,10 @@ public final class BukkitPlugin extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         getLogger().info(this.pluginDescriptionFile.getName() + " is disabled!");
+    }
+
+    private void registerEvents() {
+        new DeathEventHandler(this);
     }
 
     private void registerCommands() {

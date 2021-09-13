@@ -18,6 +18,7 @@ public class PlayerCommands {
     public PlayerCommands(BukkitPlugin plugin) {
         this.plugin = plugin;
 
+        this.registerCommand("heal", this::healPlayer);
         this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
     }

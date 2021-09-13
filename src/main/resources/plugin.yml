@@ -5,6 +5,9 @@ api-version: 1.15
 authors: [ ArnoutPullen ]
 website: https://arnoutpullen.nl
 commands:
+  heal:
+    description: Heal player
+    usage: /heal [player]
   msg:
     description: Send message to player
     usage: /msg [player] [message]

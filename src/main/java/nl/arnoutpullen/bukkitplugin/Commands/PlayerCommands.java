@@ -1,6 +1,8 @@
 package nl.arnoutpullen.bukkitplugin.Commands;
 
 import nl.arnoutpullen.bukkitplugin.BukkitPlugin;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +21,38 @@ public class PlayerCommands {
         this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
     }
+
+    /**
+     * Heal commandSender or Player
+     * /heal
+     * /heal Player
+     */
+    public boolean healPlayer(CommandSender commandSender, Command cmd, String label, String[] args) {
+        Player player = this.plugin.getServer().getPlayer(commandSender.getName());
+
+        if (player == null) {
+            return false;
+        }
+
+        AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (attribute == null) {
+            return false;
+        }
+        double healing = attribute.getDefaultValue();
+
+        if (args.length == 1) {
+            String username = args[0];
+            player = this.plugin.getServer().getPlayer(username);
+        }
+
+        if (player == null) {
+            return false;
+        }
+
+        player.setHealth(healing);
+        return true;
+    }
+
 
     /**
      * Send message directly to user

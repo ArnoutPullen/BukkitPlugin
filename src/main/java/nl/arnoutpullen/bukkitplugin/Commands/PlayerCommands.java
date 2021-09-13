@@ -5,6 +5,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class PlayerCommands {
 
@@ -13,7 +16,38 @@ public class PlayerCommands {
     public PlayerCommands(BukkitPlugin plugin) {
         this.plugin = plugin;
 
+        this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
+    }
+
+    /**
+     * Send message directly to user
+     * /msg username message
+     * */
+    public boolean sendPlayerDirectMessage(CommandSender commandSender, Command cmd, String label, String[] args) {
+
+        if (args.length > 2) {
+            // Get username
+            String username = args[0];
+            // Combine all args to string except username
+            String message  = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+            Player player   = this.plugin.getServer().getPlayer(username);
+
+            if (player == null) {
+                commandSender.sendMessage("User not found");
+                return false;
+            }
+
+            if (!player.isOnline()) {
+                commandSender.sendMessage("User not online");
+                return false;
+            }
+
+            player.sendMessage(message);
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -13,7 +13,7 @@
 - /back
 
 ## Build
-###Project Path
+### Project Path
 /Minecraft/Plugins/BukkitPlugin/
 ### Build Path:
 /Minecraft/Servers/spigot-1.17.1/plugins/

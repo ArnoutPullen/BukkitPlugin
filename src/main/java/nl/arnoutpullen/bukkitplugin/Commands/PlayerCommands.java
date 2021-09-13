@@ -94,23 +94,23 @@ public class PlayerCommands {
      */
     public boolean teleportToPlayer(CommandSender commandSender, Command cmd, String label, String[] args) {
         Location location;
-        Player player     = this.plugin.getServer().getPlayer(commandSender.getName());
+        Player targetPlayer = this.plugin.getServer().getPlayer(commandSender.getName());
 
-        if (player == null) {
+        if (targetPlayer == null) {
             commandSender.sendMessage("You are not a player");
             return false;
         }
 
         if (args.length == 1) {
             String username = args[0];
-            player   = this.plugin.getServer().getPlayer(username);
+            Player destinationPlayer = this.plugin.getServer().getPlayer(username);
 
-            if (player == null) {
+            if (destinationPlayer == null) {
                 commandSender.sendMessage("User not found");
                 return false;
             }
 
-            if (!player.isOnline()) {
+            if (!destinationPlayer.isOnline()) {
                 commandSender.sendMessage("User not online");
                 return false;
             }
@@ -120,15 +120,15 @@ public class PlayerCommands {
             String targetPlayerName      = args[0];
             String destinationPlayerName = args[1];
 
-            Player targetPlayer = this.plugin.getServer().getPlayer(targetPlayerName);
-            player = this.plugin.getServer().getPlayer(destinationPlayerName);
+            targetPlayer = this.plugin.getServer().getPlayer(targetPlayerName);
+            Player destinationPlayer = this.plugin.getServer().getPlayer(destinationPlayerName);
 
-            if (targetPlayer == null || player == null) {
+            if (targetPlayer == null || destinationPlayer == null) {
                 commandSender.sendMessage("Users not found");
                 return false;
             }
 
-            if (!targetPlayer.isOnline() || !player.isOnline()) {
+            if (!targetPlayer.isOnline() || !destinationPlayer.isOnline()) {
                 commandSender.sendMessage("Users not online");
                 return false;
             }
@@ -140,13 +140,13 @@ public class PlayerCommands {
 
         // todo permission check
 
-        Location latestLocation = player.getLocation();
+        Location latestLocation = targetPlayer.getLocation();
         // Teleport player
-        boolean teleported = player.teleport(location);
+        boolean teleported = targetPlayer.teleport(location);
 
         // Update player location
         if (teleported) {
-            this.plugin.latestPlayerLocations.insertOrUpdate(player.getUniqueId(), latestLocation);
+            this.plugin.latestPlayerLocations.insertOrUpdate(targetPlayer.getUniqueId(), latestLocation);
         }
 
         return teleported;

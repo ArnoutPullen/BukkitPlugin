@@ -22,11 +22,60 @@ public class PlayerCommands {
     public PlayerCommands(BukkitPlugin plugin) {
         this.plugin = plugin;
 
+        this.registerCommand("up", this::teleportPlayerUp);
         this.registerCommand("online", this::online);
         this.registerCommand("enderchest", this::openEnderChest);
         this.registerCommand("heal", this::healPlayer);
         this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
+    }
+
+    /**
+     * Teleport player up
+     * /up [1-256]
+     * /up [player] [1-256]
+     */
+    public boolean teleportPlayerUp(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
+            int y = 1;
+            Player player = (Player) sender;
+            Location location = player.getLocation();
+
+            if (args.length == 1) {
+                y = Integer.parseInt(args[0]);
+            }
+
+            if (args.length == 2) {
+                y = Integer.parseInt(args[0]);
+                String username = args[1];
+                player   = this.plugin.getServer().getPlayer(username);
+            }
+            if (player == null) {
+                return false;
+            }
+            // Prevent player from spawning too high
+            double playerY   = location.getY();
+            double maxHeight = player.getWorld().getMaxHeight();
+
+            // Change y to max height
+            if ((playerY + y) > maxHeight) {
+                y = (int)maxHeight;
+            }
+
+            // Prevent player from spawning too low
+            if (y < 1) {
+                y = 1;
+            }
+
+            // todo permission check
+
+            // Teleport player to Y
+            location.setY(location.getY() + y);
+            return player.teleport(location);
+        } else {
+            sender.sendMessage("Can't move you!");
+            return false;
+        }
     }
 
     /**

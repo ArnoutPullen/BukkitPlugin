@@ -5,6 +5,9 @@ api-version: 1.15
 authors: [ ArnoutPullen ]
 website: https://arnoutpullen.nl
 commands:
+  up:
+    description: Teleport up
+    usage: /up [1/256]
   online:
     description: Prints all online players in the chat
     usage: /online

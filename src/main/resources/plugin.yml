@@ -5,6 +5,9 @@ api-version: 1.15
 authors: [ ArnoutPullen ]
 website: https://arnoutpullen.nl
 commands:
+  enderchest:
+    description: Open EnderChest
+    usage: /enderchest [player]
   heal:
     description: Heal player
     usage: /heal [player]

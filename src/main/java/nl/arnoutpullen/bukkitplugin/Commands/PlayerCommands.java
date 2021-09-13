@@ -23,12 +23,66 @@ public class PlayerCommands {
         this.plugin = plugin;
 
         this.registerCommand("tp", this::teleportToPlayer);
+        this.registerCommand("tpa", this::teleportRequest);
+        this.registerCommand("tpaccept", this::teleportAccept);
+        this.registerCommand("tpdeny", this::teleportDeny);
+
         this.registerCommand("up", this::teleportPlayerUp);
         this.registerCommand("online", this::online);
         this.registerCommand("enderchest", this::openEnderChest);
         this.registerCommand("heal", this::healPlayer);
         this.registerCommand("msg", this::sendPlayerDirectMessage);
         this.registerCommand("ping", this::ping);
+    }
+
+    /**
+     * Send teleport request to player
+     * /tpa Player
+     */
+    public boolean teleportRequest(CommandSender commandSender, Command cmd, String label, String[] args) {
+        if (!(commandSender instanceof Player)) {
+            commandSender.sendMessage("You are not a player");
+            return false;
+        }
+
+        if (args.length == 1) {
+            String username = args[0];
+            Player player     = this.plugin.getServer().getPlayer(username);
+
+            if (player == null) {
+                commandSender.sendMessage("User not found");
+                return false;
+            }
+
+            if (!player.isOnline()) {
+                commandSender.sendMessage("User not online");
+                return false;
+            }
+
+            // todo teleport request logic
+            player.sendMessage(commandSender.getName() + " wants to teleport to you type /tpaccept or /tpdeny");
+        }
+
+        commandSender.sendMessage("Try /tpa Username");
+        return false;
+    }
+
+    /**
+     * Send teleport request to player
+     * /tpaccept
+     */
+    public boolean teleportAccept(CommandSender commandSender, Command cmd, String label, String[] args) {
+        // todo accept logic
+        return false;
+    }
+
+    /**
+     * Send teleport request to player
+     * /tpdeny
+     */
+    public boolean teleportDeny(CommandSender commandSender, Command cmd, String label, String[] args) {
+        // todo deny logic
+        return false;
     }
 
     /**
